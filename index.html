@@ -16,16 +16,16 @@
         </header>
         <div class="step-indicator" id="stepIndicator">Step 1 of 4</div>
         <main>
-            <form id="invoiceForm">
-                <!-- Step 1: Client Details with Netlify Form -->
-                <section class="step" id="step1">
-                    <h2>Client Details</h2>
-                    <form name="contact" netlify>
-                        <input type="hidden" name="form-name" value="contact">
-                        <input type="text" id="invoicerName" name="invoicerName" placeholder="Your Name (Invoicer)" required>
-                        <input type="tel" id="invoicerPhone" name="invoicerPhone" placeholder="Your Phone Number (optional)">
-                        <input type="email" id="invoicerEmail" name="invoicerEmail" placeholder="Your Email Address (optional)">
-                    </form>
+            <!-- Step 1: Client Details with Netlify Form -->
+            <section class="step" id="step1">
+                <h2>Client Details</h2>
+                <form name="contact" netlify>
+                    <input type="hidden" name="form-name" value="contact">
+                    <input type="text" id="invoicerName" name="invoicerName" placeholder="Your Name (Invoicer)" required>
+                    <input type="tel" id="invoicerPhone" name="invoicerPhone" placeholder="Your Phone Number (optional)">
+                    <input type="email" id="invoicerEmail" name="invoicerEmail" placeholder="Your Email Address (optional)">
+                </form>
+                <form id="invoiceForm">
                     <input type="text" id="clientName" placeholder="Client Name" required>
                     <input type="date" id="dueDate" required>
                     <div class="currency-selector">
@@ -34,11 +34,13 @@
                         <button type="button" class="currency-btn spaced-btn" data-value="EUR">€ - EUR (19%)</button>
                     </div>
                     <button type="button" id="step1Next" class="next-btn spaced-btn">Next</button>
-                </section>
+                </form>
+            </section>
 
-                <!-- Step 2: Billable Items -->
-                <section class="step" id="step2" style="display: none;">
-                    <h2>Billable Items</h2>
+            <!-- Step 2: Billable Items -->
+            <section class="step" id="step2" style="display: none;">
+                <h2>Billable Items</h2>
+                <form id="invoiceFormStep2">
                     <div class="billables">
                         <div class="billable-header">
                             <span>Description</span>
@@ -58,31 +60,36 @@
                     </div>
                     <button type="button" class="prev-btn spaced-btn">Previous</button>
                     <button type="button" class="next-btn spaced-btn">Next</button>
-                </section>
+                </form>
+            </section>
 
-                <!-- Step 3: Bank Details (Optional) -->
-                <section class="step" id="step3" style="display: none;">
-                    <h2>Bank Details (Optional)</h2>
-                    <p>Include your bank details for direct payment (leave blank to skip).</p>
+            <!-- Step 3: Bank Details (Optional) -->
+            <section class="step" id="step3" style="display: none;">
+                <h2>Bank Details (Optional)</h2>
+                <p>Include your bank details for direct payment (leave blank to skip).</p>
+                <form id="invoiceFormStep3">
                     <input type="text" id="bankAccountNumber" placeholder="Bank Account Number">
                     <input type="text" id="bankSortCode" placeholder="Sort Code (xx-xx-xx)" pattern="\d{2}-\d{2}-\d{2}" title="Sort Code must be in the format xx-xx-xx (e.g., 12-34-56)">
                     <input type="text" id="bankIBAN" placeholder="IBAN (International)">
                     <input type="text" id="bankSWIFT" placeholder="SWIFT/BIC (International)">
                     <button type="button" class="prev-btn spaced-btn">Previous</button>
                     <button type="button" class="next-btn spaced-btn">Next</button>
-                </section>
+                </form>
+            </section>
 
-                <!-- Step 4: Review & Generate -->
-                <section class="step" id="step4" style="display: none;">
-                    <h2>Review & Generate</h2>
+            <!-- Step 4: Review & Generate -->
+            <section class="step" id="step4" style="display: none;">
+                <h2>Review & Generate</h2>
+                <form id="invoiceFormStep4">
                     <label class="gdpr-checkbox">
                         <input type="checkbox" id="gdprConsent" required>
                         I agree to the <a href="/privacy-policy.html" target="_blank">Privacy Policy</a> and GDPR terms.
                     </label>
                     <button type="button" class="prev-btn spaced-btn">Previous</button>
                     <button type="submit" class="generate-btn spaced-btn" id="generateBtn" disabled>Generate Invoice</button>
-                </section>
-            </form>
+                </form>
+            </section>
+
             <section class="invoice-list">
                 <h2>Your Invoices</h2>
                 <ul id="invoiceList"></ul>
