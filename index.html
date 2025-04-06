@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvoiceAI Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>InvoiceAI</h1>
+            <p>Fast. Simple. Vibrant.</p>
+        </header>
+        <div class="step-indicator" id="stepIndicator">Step 1 of 4</div>
+        <main>
+            <form id="invoiceForm">
+                <!-- Step 1: Client Details -->
+                <section class="step" id="step1">
+                    <h2>Client Details</h2>
+                    <input type="text" id="invoicerName" placeholder="Your Name (Invoicer)" required>
+                    <input type="tel" id="invoicerPhone" placeholder="Your Phone Number (optional)">
+                    <input type="email" id="invoicerEmail" placeholder="Your Email Address (optional)">
+                    <input type="text" id="clientName" placeholder="Client Name" required>
+                    <input type="date" id="dueDate" required>
+                    <div class="currency-selector">
+                        <button type="button" class="currency-btn active spaced-btn" data-value="GBP">£ - GBP (20%)</button>
+                        <button type="button" class="currency-btn spaced-btn" data-value="USD">$ - USD (8%)</button>
+                        <button type="button" class="currency-btn spaced-btn" data-value="EUR">€ - EUR (19%)</button>
+                    </div>
+                    <button type="button" class="next-btn spaced-btn">Next</button>
+                </section>
+
+                <!-- Step 2: Billable Items -->
+                <section class="step" id="step2" style="display: none;">
+                    <h2>Billable Items</h2>
+                    <div class="billables">
+                        <div class="billable-header">
+                            <span>Description</span>
+                            <span>Quantity</span>
+                            <span>Rate</span>
+                            <span>Hours</span>
+                        </div>
+                        <div id="billableItems">
+                            <div class="billable-item">
+                                <input type="text" class="item-desc" placeholder="Description" required>
+                                <input type="number" class="item-qty" placeholder="Qty" step="1" value="1" required>
+                                <input type="text" class="item-rate" placeholder="(No Symbols)" pattern="[0-9]+(\.[0-9]{1,2})?" title="Enter a number (e.g., 50 or 50.00), no currency symbols" required>
+                                <input type="number" class="item-hours" placeholder="(optional)" step="0.1">
+                            </div>
+                        </div>
+                        <button type="button" id="addItem" class="spaced-btn">+ Add Item</button>
+                    </div>
+                    <button type="button" class="prev-btn spaced-btn">Previous</button>
+                    <button type="button" class="next-btn spaced-btn">Next</button>
+                </section>
+
+                <!-- Step 3: Bank Details (Optional) -->
+                <section class="step" id="step3" style="display: none;">
+                    <h2>Bank Details (Optional)</h2>
+                    <p>Include your bank details for direct payment (leave blank to skip).</p>
+                    <input type="text" id="bankAccountNumber" placeholder="Bank Account Number" pattern="\d{8}">
+                    <input type="text" id="bankSortCode" placeholder="Sort Code (12-34-56)" pattern="\d{2}-\d{2}-\d{2}" title="Sort Code must be in the format xx-xx-xx (e.g., 12-34-56)">
+                    <input type="text" id="bankIBAN" placeholder="IBAN (International)">
+                    <input type="text" id="bankSWIFT" placeholder="SWIFT/BIC (International)">
+                    <button type="button" class="prev-btn spaced-btn">Previous</button>
+                    <button type="button" class="next-btn spaced-btn">Next</button>
+                </section>
+
+                <!-- Step 4: Review & Generate -->
+                <section class="step" id="step4" style="display: none;">
+                    <h2>Review & Generate</h2>
+                    <button type="button" class="prev-btn spaced-btn">Previous</button>
+                    <button type="submit" class="generate-btn spaced-btn">Generate Invoice</button>
+                </section>
+            </form>
+            <section class="invoice-list">
+                <h2>Your Invoices</h2>
+                <ul id="invoiceList"></ul>
+            </section>
+        </main>
+        <footer>
+            <p>© 2025 InvoiceAI. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
