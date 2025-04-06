@@ -216,6 +216,13 @@ button.spaced-btn:hover {
     box-shadow: 0 8px 20px rgba(0, 212, 255, 0.6);
 }
 
+button.spaced-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: #b0b0ff;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 #addItem {
     background: linear-gradient(135deg, #00d4ff, #00b8e6);
 }
@@ -243,6 +250,50 @@ button.spaced-btn:hover {
 .generate-btn:hover {
     background: linear-gradient(135deg, #00b8e6, #009ccc);
     box-shadow: 0 8px 20px rgba(0, 212, 255, 0.6);
+}
+
+.gdpr-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #e0e0ff;
+    font-size: 1.1em;
+}
+
+.gdpr-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #00d4ff;
+    border-radius: 5px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.gdpr-checkbox input[type="checkbox"]:checked {
+    background: #00d4ff;
+    border-color: #00d4ff;
+    position: relative;
+}
+
+.gdpr-checkbox input[type="checkbox"]:checked::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1e1e2f;
+    font-size: 14px;
+}
+
+.gdpr-checkbox a {
+    color: #00d4ff;
+    text-decoration: none;
+}
+
+.gdpr-checkbox a:hover {
+    text-decoration: underline;
 }
 
 .invoice-list {
