@@ -44,11 +44,10 @@ document.getElementById('step1Next').addEventListener('click', function(e) {
     })
     .then(() => {
         console.log('Netlify form submitted successfully');
-        showStep(currentStep + 1); // Proceed to the next step
+        showStep(currentStep + 1);
     })
     .catch(error => {
         console.error('Error submitting Netlify form:', error);
-        // Proceed to the next step even if submission fails (optional)
         showStep(currentStep + 1);
     });
 });
@@ -111,7 +110,7 @@ function addBillableItem(desc = '', qty = 1, rate = '', hours = '') {
 document.getElementById('invoiceForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const allRequiredInputs = this.querySelectorAll('input[required]');
+    const allRequiredInputs = this.querySelectorAll('input[required]:not(#gdprConsent)');
     let formValid = true;
     allRequiredInputs.forEach(input => {
         if (!input.value) {
@@ -144,10 +143,13 @@ document.getElementById('invoiceForm').addEventListener('submit', function(e) {
         sortCodeInput.setCustomValidity('');
     }
 
-    // Validate GDPR checkbox
+    // Validate GDPR checkbox (already handled by button being disabled, but ensure it's checked)
     if (!gdprCheckbox.checked) {
         formValid = false;
+        gdprCheckbox.setCustomValidity('You must agree to the Privacy Policy and GDPR terms.');
         gdprCheckbox.reportValidity();
+    } else {
+        gdprCheckbox.setCustomValidity('');
     }
 
     if (!formValid) return;
@@ -257,8 +259,8 @@ document.getElementById('invoiceForm').addEventListener('submit', function(e) {
     selectedCurrency = 'GBP';
     setDefaultDate();
     showStep(1);
-    gdprCheckbox.checked = false; // Reset GDPR checkbox
-    generateBtn.disabled = true; // Disable Generate button after reset
+    gdprCheckbox.checked = false;
+    generateBtn.disabled = true;
 });
 
 function currencySymbol(currency) {
