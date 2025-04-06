@@ -25,7 +25,6 @@
                         <input type="text" id="invoicerName" name="invoicerName" placeholder="Your Name (Invoicer)" required>
                         <input type="tel" id="invoicerPhone" name="invoicerPhone" placeholder="Your Phone Number (optional)">
                         <input type="email" id="invoicerEmail" name="invoicerEmail" placeholder="Your Email Address (optional)">
-                        <button type="submit" id="step1Next" class="next-btn spaced-btn">Next</button>
                     </form>
                     <input type="text" id="clientName" placeholder="Client Name" required>
                     <input type="date" id="dueDate" required>
@@ -34,6 +33,7 @@
                         <button type="button" class="currency-btn spaced-btn" data-value="USD">$ - USD (8%)</button>
                         <button type="button" class="currency-btn spaced-btn" data-value="EUR">€ - EUR (19%)</button>
                     </div>
+                    <button type="button" id="step1Next" class="next-btn spaced-btn">Next</button>
                 </section>
 
                 <!-- Step 2: Billable Items -->
@@ -77,7 +77,7 @@
                     <h2>Review & Generate</h2>
                     <label class="gdpr-checkbox">
                         <input type="checkbox" id="gdprConsent" required>
-                        I agree to the <a href="/privacy-policy" target="_blank">Privacy Policy</a> and GDPR terms.
+                        I agree to the <a href="/privacy-policy.html" target="_blank">Privacy Policy</a> and GDPR terms.
                     </label>
                     <button type="button" class="prev-btn spaced-btn">Previous</button>
                     <button type="submit" class="generate-btn spaced-btn" id="generateBtn" disabled>Generate Invoice</button>
