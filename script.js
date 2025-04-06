@@ -91,26 +91,17 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
 const gdprCheckbox = document.getElementById('gdprConsent');
 const generateBtn = document.getElementById('generateBtn');
 gdprCheckbox.addEventListener('change', function() {
+    console.log('GDPR checkbox changed:', this.checked);
     generateBtn.disabled = !this.checked;
 });
 
-function addBillableItem(desc = '', qty = 1, rate = '', hours = '') {
-    const billableItems = document.getElementById('billableItems');
-    const newItem = document.createElement('div');
-    newItem.classList.add('billable-item');
-    newItem.innerHTML = `
-        <input type="text" class="item-desc" placeholder="Description" value="${desc}" required>
-        <input type="number" class="item-qty" placeholder="Qty" step="1" value="${qty}" required>
-        <input type="text" class="item-rate" placeholder="Rate (numbers only)" pattern="[0-9]+(\.[0-9]{1,2})?" title="Enter a number (e.g., 50 or 50.00), no currency symbols" value="${rate}" required>
-        <input type="number" class="item-hours" placeholder="Hours (optional)" step="0.1" value="${hours}">
-    `;
-    billableItems.appendChild(newItem);
-}
-
-document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+// Handle form submission for Step 4
+document.getElementById('invoiceFormStep4').addEventListener('submit', function(e) {
     e.preventDefault();
+    console.log('Form submission triggered');
 
-    const allRequiredInputs = this.querySelectorAll('input[required]:not(#gdprConsent)');
+    // Validate required inputs across all steps
+    const allRequiredInputs = document.querySelectorAll('#step1 input[required], #step2 input[required]');
     let formValid = true;
     allRequiredInputs.forEach(input => {
         if (!input.value) {
@@ -143,16 +134,12 @@ document.getElementById('invoiceForm').addEventListener('submit', function(e) {
         sortCodeInput.setCustomValidity('');
     }
 
-    // Validate GDPR checkbox (already handled by button being disabled, but ensure it's checked)
-    if (!gdprCheckbox.checked) {
-        formValid = false;
-        gdprCheckbox.setCustomValidity('You must agree to the Privacy Policy and GDPR terms.');
-        gdprCheckbox.reportValidity();
-    } else {
-        gdprCheckbox.setCustomValidity('');
+    if (!formValid) {
+        console.log('Form validation failed');
+        return;
     }
 
-    if (!formValid) return;
+    console.log('Form validation passed, generating invoice');
 
     const invoicerName = document.getElementById('invoicerName').value;
     const invoicerPhone = document.getElementById('invoicerPhone').value;
@@ -251,7 +238,11 @@ document.getElementById('invoiceForm').addEventListener('submit', function(e) {
         bankSWIFT
     );
 
-    this.reset();
+    // Reset the form
+    document.getElementById('invoiceForm').reset();
+    document.getElementById('invoiceFormStep2').reset();
+    document.getElementById('invoiceFormStep3').reset();
+    document.getElementById('invoiceFormStep4').reset();
     document.getElementById('billableItems').innerHTML = '';
     addBillableItem();
     document.querySelector('.currency-btn[data-value="GBP"]').classList.add('active');
@@ -375,6 +366,19 @@ function downloadInvoice(invoicerName, invoicerPhone, invoicerEmail, clientName,
     doc.textWithLink('Invoices Made Easier by InvoiceAI', pageWidth / 2, pageHeight - margin, { align: 'center', url: 'https://invoiceai.com' });
 
     doc.save(`invoice_${clientName}_${dueDate}.pdf`);
+}
+
+function addBillableItem(desc = '', qty = 1, rate = '', hours = '') {
+    const billableItems = document.getElementById('billableItems');
+    const newItem = document.createElement('div');
+    newItem.classList.add('billable-item');
+    newItem.innerHTML = `
+        <input type="text" class="item-desc" placeholder="Description" value="${desc}" required>
+        <input type="number" class="item-qty" placeholder="Qty" step="1" value="${qty}" required>
+        <input type="text" class="item-rate" placeholder="Rate (numbers only)" pattern="[0-9]+(\.[0-9]{1,2})?" title="Enter a number (e.g., 50 or 50.00), no currency symbols" value="${rate}" required>
+        <input type="number" class="item-hours" placeholder="Hours (optional)" step="0.1" value="${hours}">
+    `;
+    billableItems.appendChild(newItem);
 }
 
 function setDefaultDate() {
