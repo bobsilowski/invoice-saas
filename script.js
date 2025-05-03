@@ -363,7 +363,7 @@ function downloadInvoice(invoicerName, invoicerPhone, invoicerEmail, clientName,
 
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 255);
-    doc.textWithLink('Invoices Made Easier by InvoiceAI', pageWidth / 2, pageHeight - margin, { align: 'center', url: 'https://clinquant-semolina-61a738.netlify.app' });
+    doc.textWithLink('Invoices Made Easier by InvoiceAI', pageWidth / 2, pageHeight - margin, { align: 'center', url: 'https://invoiceai.com' });
 
     doc.save(`invoice_${clientName}_${dueDate}.pdf`);
 }
