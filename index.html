@@ -29,9 +29,13 @@
                     <input type="text" id="clientName" placeholder="Client Name" required>
                     <input type="date" id="dueDate" required>
                     <div class="currency-selector">
-                        <button type="button" class="currency-btn active spaced-btn" data-value="GBP">£ - GBP (20%)</button>
-                        <button type="button" class="currency-btn spaced-btn" data-value="USD">$ - USD (8%)</button>
-                        <button type="button" class="currency-btn spaced-btn" data-value="EUR">€ - EUR (19%)</button>
+                        <button type="button" class="currency-btn active spaced-btn" data-value="GBP">£</button>
+                        <button type="button" class="currency-btn spaced-btn" data-value="USD">$</button>
+                        <button type="button" class="currency-btn spaced-btn" data-value="EUR">€</button>
+                    </div>
+                    <div class="tax-selector">
+                        <button type="button" class="tax-btn active spaced-btn" data-tax="20">20% (Default)</button>
+                        <button type="button" class="tax-btn spaced-btn" data-tax="0">0%</button>
                     </div>
                     <button type="button" id="step1Next" class="next-btn spaced-btn">Next</button>
                 </form>
