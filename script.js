@@ -3,7 +3,8 @@ const { jsPDF } = window.jspdf;
 let currentStep = 1;
 const totalSteps = 4;
 
-let selectedCurrency = 'GBP';
+let selectedCurrency = 'GBP'; // Default currency
+let selectedTaxRate = 0.20; // Default tax rate for GBP (20%)
 let invoices = [];
 
 function updateStepIndicator() {
@@ -84,6 +85,18 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
         document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         selectedCurrency = this.getAttribute('data-value');
+        // Update default tax rate based on selected currency
+        selectedTaxRate = { 'GBP': 0.20, 'USD': 0.08, 'EUR': 0.19 }[selectedCurrency];
+        document.querySelector('.tax-btn[data-tax="20"]').classList.add('active');
+        document.querySelector('.tax-btn[data-tax="0"]').classList.remove('active');
+    });
+});
+
+document.querySelectorAll('.tax-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tax-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedTaxRate = parseFloat(this.getAttribute('data-tax')) / 100; // Convert percentage to decimal
     });
 });
 
@@ -167,8 +180,7 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         subtotal += itemTotal;
     });
 
-    const taxRate = { 'GBP': 0.20, 'USD': 0.08, 'EUR': 0.19 }[currency];
-    const tax = subtotal * taxRate;
+    const tax = subtotal * selectedTaxRate;
     const total = subtotal + tax;
 
     const invoiceData = {
@@ -182,7 +194,7 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         tax,
         total,
         currency,
-        taxRate,
+        taxRate: selectedTaxRate,
         bankAccountNumber,
         bankSortCode,
         bankIBAN,
@@ -231,7 +243,7 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         tax,
         total,
         currency,
-        taxRate,
+        selectedTaxRate,
         bankAccountNumber,
         bankSortCode,
         bankIBAN,
@@ -247,7 +259,10 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
     addBillableItem();
     document.querySelector('.currency-btn[data-value="GBP"]').classList.add('active');
     document.querySelectorAll('.currency-btn:not([data-value="GBP"])').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tax-btn[data-tax="20"]').classList.add('active');
+    document.querySelector('.tax-btn[data-tax="0"]').classList.remove('active');
     selectedCurrency = 'GBP';
+    selectedTaxRate = 0.20;
     setDefaultDate();
     showStep(1);
     gdprCheckbox.checked = false;
