@@ -3,8 +3,8 @@ const { jsPDF } = window.jspdf;
 let currentStep = 1;
 const totalSteps = 4;
 
-let selectedCurrency = 'GBP'; // Default currency
-let selectedTaxRate = 0.20; // Default tax rate for GBP (20%)
+let selectedCurrency = 'GBP';
+let selectedTaxRate = 0.20;
 let invoices = [];
 
 function updateStepIndicator() {
@@ -19,13 +19,11 @@ function showStep(step) {
     updateStepIndicator();
 }
 
-// Handle Step 1 "Next" button for Netlify form submission
 document.getElementById('step1Next').addEventListener('click', function(e) {
     e.preventDefault();
     const form = document.forms['contact'];
     const formData = new FormData(form);
 
-    // Validate required fields in Step 1
     const currentInputs = document.getElementById('step1').querySelectorAll('input[required]');
     let valid = true;
     currentInputs.forEach(input => {
@@ -37,23 +35,19 @@ document.getElementById('step1Next').addEventListener('click', function(e) {
 
     if (!valid) return;
 
-    // Submit the form to Netlify
     fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formData).toString()
     })
     .then(() => {
-        console.log('Netlify form submitted successfully');
         showStep(currentStep + 1);
     })
     .catch(error => {
-        console.error('Error submitting Netlify form:', error);
         showStep(currentStep + 1);
     });
 });
 
-// Handle other "Next" buttons
 document.querySelectorAll('.next-btn:not(#step1Next)').forEach(btn => {
     btn.addEventListener('click', function() {
         if (currentStep < totalSteps) {
@@ -85,7 +79,6 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
         document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         selectedCurrency = this.getAttribute('data-value');
-        // Update default tax rate based on selected currency
         selectedTaxRate = { 'GBP': 0.20, 'USD': 0.08, 'EUR': 0.19 }[selectedCurrency];
         document.querySelector('.tax-btn[data-tax="20"]').classList.add('active');
         document.querySelector('.tax-btn[data-tax="0"]').classList.remove('active');
@@ -96,24 +89,19 @@ document.querySelectorAll('.tax-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.tax-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        selectedTaxRate = parseFloat(this.getAttribute('data-tax')) / 100; // Convert percentage to decimal
+        selectedTaxRate = parseFloat(this.getAttribute('data-tax')) / 100;
     });
 });
 
-// Handle GDPR checkbox
 const gdprCheckbox = document.getElementById('gdprConsent');
 const generateBtn = document.getElementById('generateBtn');
 gdprCheckbox.addEventListener('change', function() {
-    console.log('GDPR checkbox changed:', this.checked);
     generateBtn.disabled = !this.checked;
 });
 
-// Handle form submission for Step 4
 document.getElementById('invoiceFormStep4').addEventListener('submit', function(e) {
     e.preventDefault();
-    console.log('Form submission triggered');
 
-    // Validate required inputs across all steps
     const allRequiredInputs = document.querySelectorAll('#step1 input[required], #step2 input[required]');
     let formValid = true;
     allRequiredInputs.forEach(input => {
@@ -123,7 +111,6 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         }
     });
 
-    // Validate rate fields (no currency symbols)
     const rateInputs = document.querySelectorAll('.item-rate');
     for (let rateInput of rateInputs) {
         const rateValue = rateInput.value;
@@ -136,7 +123,6 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         }
     }
 
-    // Validate sort code format
     const sortCodeInput = document.getElementById('bankSortCode');
     const sortCodeValue = sortCodeInput.value;
     if (sortCodeValue && !/^\d{2}-\d{2}-\d{2}$/.test(sortCodeValue)) {
@@ -147,12 +133,7 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         sortCodeInput.setCustomValidity('');
     }
 
-    if (!formValid) {
-        console.log('Form validation failed');
-        return;
-    }
-
-    console.log('Form validation passed, generating invoice');
+    if (!formValid) return;
 
     const invoicerName = document.getElementById('invoicerName').value;
     const invoicerPhone = document.getElementById('invoicerPhone').value;
@@ -165,7 +146,7 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
     const bankIBAN = document.getElementById('bankIBAN').value;
     const bankSWIFT = document.getElementById('bankSWIFT').value;
     const billableItems = document.querySelectorAll('.billable-item');
-    
+
     let subtotal = 0;
     const items = [];
     billableItems.forEach(item => {
@@ -250,7 +231,6 @@ document.getElementById('invoiceFormStep4').addEventListener('submit', function(
         bankSWIFT
     );
 
-    // Reset the form
     document.getElementById('invoiceForm').reset();
     document.getElementById('invoiceFormStep2').reset();
     document.getElementById('invoiceFormStep3').reset();
@@ -401,6 +381,5 @@ function setDefaultDate() {
     document.getElementById('dueDate').value = today;
 }
 
-// Initialize
 setDefaultDate();
 showStep(1);
